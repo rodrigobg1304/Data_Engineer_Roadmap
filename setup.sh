@@ -54,6 +54,10 @@ app = FastAPI(
     version="0.1.0",
 )
 
+@app.get("/")
+def root():
+    return {"message": "Hello World! 🌍"}
+
 @app.get("/ping")
 def ping():
     return {"message": "pong 🏓"}
