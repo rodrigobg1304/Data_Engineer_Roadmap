@@ -594,3 +594,199 @@ Al final tendrás:
 ✅ **API pública online**
 ✅ **Pipeline Spark + Airflow (opcional)**
 ✅ **Historial de commits demostrable**
+
+
+
+# 🧠 GUÍA COMPLETA — MODELOS DE MACHINE LEARNING (SUPERVISADOS Y NO SUPERVISADOS)
+
+------
+
+## 🧩 1️⃣ ¿Qué es Machine Learning?
+
+**Machine Learning (ML)** es una rama de la inteligencia artificial que permite a las máquinas **aprender de los datos**para hacer predicciones o tomar decisiones sin estar explícitamente programadas para cada tarea.
+
+En esencia:
+
+> ML = Datos + Algoritmo → Modelo que aprende patrones → Predice o clasifica
+
+------
+
+## ⚖️ 2️⃣ Tipos principales de aprendizaje en ML
+
+| Tipo de aprendizaje | Datos de entrenamiento                    | Objetivo                            | Ejemplo típico                             |
+| ------------------- | ----------------------------------------- | ----------------------------------- | ------------------------------------------ |
+| **Supervisado**     | Etiquetados (tienen respuesta o “target”) | Predecir un valor o clase           | Predecir precio de casa, detectar fraude   |
+| **No supervisado**  | Sin etiquetas (no hay target)             | Descubrir patrones ocultos o grupos | Agrupar clientes, reducción de dimensiones |
+| **Por refuerzo**    | Basado en recompensas                     | Aprender a través de ensayo y error | Robots, videojuegos, control autónomo      |
+
+------
+
+## 🧠 3️⃣ Aprendizaje Supervisado
+
+### 📘 Definición:
+
+El modelo **aprende a partir de ejemplos etiquetados**, es decir, cada dato tiene una **entrada (X)** y una **salida esperada (y)**.
+
+Ejemplo:
+
+| Tamaño (m²) | Habitaciones | Precio (€) |
+| ----------- | ------------ | ---------- |
+| 100         | 3            | 200000     |
+| 80          | 2            | 150000     |
+
+El modelo aprende la relación entre las características (X) y el resultado (y).
+
+------
+
+### 🧩 Tipos de modelos supervisados:
+
+#### 1️⃣ **Regresión**
+
+Predice **valores numéricos continuos**.
+
+📚 Ejemplos:
+
+- Predicción del precio de una vivienda 🏠
+- Estimación de ventas mensuales 💰
+- Predicción de temperatura 🌡️
+
+📈 Modelos típicos:
+
+- **Regresión lineal**
+- **Regresión polinómica**
+- **Random Forest Regressor**
+- **Gradient Boosting / XGBoost**
+- **Redes neuronales (para regresión)**
+
+💡 Ejemplo de uso:
+
+> *“Quiero predecir cuánto costará una casa según su tamaño y ubicación.”*
+
+------
+
+#### 2️⃣ **Clasificación**
+
+Predice **categorías o clases**.
+
+📚 Ejemplos:
+
+- Clasificación de correos spam / no spam 📧
+- Diagnóstico médico (benigno / maligno) ⚕️
+- Predicción de abandono de cliente (churn) 📞
+
+📈 Modelos típicos:
+
+- **Regresión logística**
+- **k-Nearest Neighbors (kNN)**
+- **Random Forest Classifier**
+- **Support Vector Machines (SVM)**
+- **Redes neuronales (para clasificación)**
+
+💡 Ejemplo de uso:
+
+> *“¿Este cliente dejará de usar mi servicio? (Sí/No)”*
+
+------
+
+### ✅ Ventajas del aprendizaje supervisado:
+
+- Permite **predicciones precisas**.
+- Se puede evaluar fácilmente con métricas (accuracy, RMSE, F1-score).
+- Ideal para **problemas con datos históricos y etiquetas claras**.
+
+### ⚠️ Desventajas:
+
+- Requiere **muchos datos etiquetados**.
+- Puede **sobreajustarse** (overfitting) si el modelo aprende ruido en lugar de patrones reales.
+
+------
+
+## 🌌 4️⃣ Aprendizaje No Supervisado
+
+### 📘 Definición:
+
+El modelo **no tiene etiquetas**; solo las variables de entrada (X).
+Busca **patrones ocultos**, **agrupaciones** o **relaciones** dentro de los datos.
+
+Ejemplo:
+
+| Edad | Ingresos (€) | Frecuencia de compra |
+| ---- | ------------ | -------------------- |
+| 22   | 1200         | 4                    |
+| 45   | 4500         | 10                   |
+| 30   | 2000         | 5                    |
+
+El modelo intenta **agrupar** (clustering) o **reducir la complejidad** (reducción de dimensiones).
+
+------
+
+### 🧩 Tipos de modelos no supervisados:
+
+#### 1️⃣ **Clustering (agrupamiento)**
+
+Agrupa los datos según similitud.
+
+📚 Ejemplos:
+
+- Segmentación de clientes (marketing)
+- Agrupamiento de documentos o noticias
+- Detección de anomalías o fraude
+
+📈 Modelos típicos:
+
+- **K-Means**
+- **DBSCAN**
+- **Hierarchical Clustering**
+
+💡 Ejemplo de uso:
+
+> *“Quiero dividir mis clientes en 4 grupos según su comportamiento de compra.”*
+
+------
+
+#### 2️⃣ **Reducción de dimensionalidad**
+
+Reduce el número de variables conservando la información más relevante.
+
+📚 Ejemplos:
+
+- Compresión de datos (para visualización o velocidad)
+- Preprocesamiento antes de aplicar modelos
+- Eliminación de ruido
+
+📈 Modelos típicos:
+
+- **PCA (Principal Component Analysis)**
+- **t-SNE**
+- **Autoencoders**
+
+💡 Ejemplo de uso:
+
+> *“Tengo 1000 variables por cliente y quiero reducirlas a 2 para visualizar los patrones.”*
+
+------
+
+### ✅ Ventajas del aprendizaje no supervisado:
+
+- No necesita etiquetas (ideal cuando no las tenemos).
+- Descubre **estructuras y relaciones ocultas**.
+- Útil para **explorar y entender los datos**.
+
+### ⚠️ Desventajas:
+
+- Difícil evaluar su precisión.
+- Resultados a veces **difíciles de interpretar**.
+- Requiere buen **preprocesamiento** y **normalización**.
+
+------
+
+## ⚙️ 5️⃣ Cómo elegir el mejor tipo de modelo
+
+| Objetivo                       | Tipo de aprendizaje               | Modelos recomendados                            |
+| ------------------------------ | --------------------------------- | ----------------------------------------------- |
+| Predecir un valor numérico     | Supervisado (Regresión)           | LinearRegression, RandomForestRegressor         |
+| Clasificar (Sí/No, categorías) | Supervisado (Clasificación)       | LogisticRegression, SVM, RandomForestClassifier |
+| Agrupar elementos similares    | No supervisado (Clustering)       | KMeans, DBSCAN                                  |
+| Reducir número de variables    | No supervisado (Reducción)        | PCA, Autoencoder                                |
+| Detectar anomalías o fraude    | No supervisado o semi-supervisado | IsolationForest, DBSCAN                         |
+| Recomendaciones de productos   | No supervisado / híbrido          | KMeans, modelos colaborativos                   |

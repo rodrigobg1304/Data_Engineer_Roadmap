@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from fastapi import FastAPI, Path, HTTPException
+from fastapi import FastAPI, Path, HTTPException, Query, Header
 from enum import Enum
-from app.model import Team
-from typing import List
+from app.model import Team, ModelName, TeamName, CommonHeaders, Item
+from typing import List, Annotated, Any
 
 app = FastAPI(
     title="ML Model API",
@@ -11,19 +11,8 @@ app = FastAPI(
     version="0.1.0",
 )
 
-class ModelName(str, Enum):
-    matches = "matches"
-    goals = "goals"
-    corners = "corners"
-
 fake_teams_db = [{"item_name": "Real Madrid"}, {"item_name": "Barcelona"},
                  {"item_name": "Sevilla"}, {"item_name": "Real Betis"}]
-
-class TeamName(str, Enum):
-    real_madrid = "Real Madrid"
-    barcelona = "Barcelona"
-    sevilla = "Sevilla"
-    betis = "Real Betis"
 
 @app.get("/")
 def root():
@@ -46,6 +35,11 @@ def convert_to_decimal(binary_number: str = Path(..., pattern="^[01]+$", descrip
 
 @app.get("/models/{model_name}")
 async def get_model(model_name: ModelName):
+    """
+    Select the model that you want to implement
+    :param model_name: Enum of different values.
+    :return: json structure
+    """
     if model_name.value == ModelName.matches:
         return {"model_name": model_name, "message": "Deep matches results"}
     elif model_name.value == ModelName.goals:
@@ -60,7 +54,7 @@ async def get_teams(skip: int = 0, limit: int = 10):
     return fake_teams_db[skip : skip + limit]
 
 @app.post("/teams/")
-async def post_teams(teams: List[Team]):
+async def post_teams(teams: List[Team]) -> Any:
     return {"message": "Created", "total": len(teams), "data": teams}
 
 
@@ -72,3 +66,66 @@ async def get_team_info(team_name: TeamName, needy: str, skip: int = 0, limit: i
     else:
         return {"Team": team_name, "needy": needy, "skip": skip, "limit": limit}
 
+@app.get("/items/")
+async def read_items(
+    q: Annotated[
+        str | None,
+        Query(
+            alias="item-query",
+            title="Query string",
+            description="Query string for the items to search in the database that have a good match",
+            min_length=3,
+            max_length=50,
+            pattern="^fixedquery$",
+            deprecated=True,
+        ),
+    ] = None,
+):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+@app.get("/headers/")
+async def get_headers(headers: Annotated[CommonHeaders, Header(convert_underscores=False)]):
+    return headers
+
+@app.post("/items2/", response_model=Item)
+async def create_item(item: Item) -> Any:
+    return item
+
+
+@app.get("/items2/", response_model=list[Item])
+async def read_items() -> Any:
+    return [
+        {"name": "Portal Gun", "price": 42.0},
+        {"name": "Plumbus", "price": 32.0},
+    ]
+
+
+# app/main.py
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+import numpy as np
+
+app = FastAPI()
+
+# Cargar el modelo entrenado al iniciar
+model = joblib.load("app/model_rf.pkl")
+iris_classes = ["setosa", "versicolor", "virginica"]
+
+# Definir el esquema de entrada con Pydantic
+class IrisFeatures(BaseModel):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
+
+@app.post("/predict/")
+async def predict(iris: IrisFeatures):
+    # Convertir los datos a numpy array
+    features = np.array([[iris.sepal_length, iris.sepal_width, iris.petal_length, iris.petal_width]])
+    prediction = model.predict(features)[0]
+    pred_idx = model.predict(features)[0]
+    return {"prediction": int(prediction), "flower": iris_classes[pred_idx]}
